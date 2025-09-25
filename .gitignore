@@ -1,0 +1,5 @@
+bin/
+obj/
+.playwright/
+node_modules/
+.env
