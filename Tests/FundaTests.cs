@@ -1,4 +1,5 @@
 using Microsoft.Playwright;
+using PlaywrightTests.Data;
 using PlaywrightTests.Pages;
 using Xunit;
 
@@ -15,7 +16,7 @@ public class FundaTests : PlaywrightTestBase
         await fundaPage.GoToAsync();
         await fundaPage.AcceptCookies();
         await fundaPage.WaitForHomePage();
-        await fundaPage.SearchCity("Amsterdam");
+        await fundaPage.SearchCity(TestData.City);
         await page.PauseAsync();
     }
 }
