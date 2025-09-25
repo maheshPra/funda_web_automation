@@ -13,10 +13,12 @@ public class FundaTests : PlaywrightTestBase
         var page = await CreateFundaPageAsync();
         var fundaPage = new FundaPage(page);
 
-        await fundaPage.GoToAsync();
+        await fundaPage.GoToAsync("https://www.funda.nl/");
         await fundaPage.AcceptCookies();
         await fundaPage.WaitForHomePage();
+        await fundaPage.AssertHomePageElementsVisible();
         await fundaPage.SearchCity(TestData.City);
+        await fundaPage.VerifyCitySelectionAndResults();
         await page.PauseAsync();
     }
 }
