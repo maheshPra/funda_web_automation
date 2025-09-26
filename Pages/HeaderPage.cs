@@ -18,6 +18,12 @@ public class HeaderPage
     private const string InloggenButtonText = "Inloggen";
     private const string SearchBoxTestId = "search-box";
     private const string MeldJeAanButtonText = "Meld je aan";
+    private const string LoginHeadingText = "Log in";
+    private const string EmailTextboxName = "E-mailadres";
+    private const string PasswordTextboxName = "Wachtwoord";
+    private const string LoginSubmitButtonText = "Log in";
+
+
 
 
 
@@ -55,6 +61,35 @@ public class HeaderPage
         Assert.True(await _page.Locator(VerkopenButtonId).IsEnabledAsync(), "Verkopen button should be enabled before clicking.");
 
     }
+
+    public async Task ClickInloggenButton()
+    {
+        var inloggenButton = _page.Locator($"button:has-text('{InloggenButtonText}')").First;
+
+        // Wait until button is visible and enabled
+        await inloggenButton.WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 15000 });
+
+        // Hover (optional, for menus)
+        await inloggenButton.HoverAsync();
+
+        // Click to trigger modal
+        await inloggenButton.ClickAsync();
+
+        // Wait for modal to appear
+        await _page.GetByRole(AriaRole.Heading, new() { Name = LoginHeadingText })
+                   .WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 15000 });
+    }
+    
+    public async Task Login(string email, string password)
+    {
+        await _page.GetByRole(AriaRole.Textbox, new() { Name = EmailTextboxName }).FillAsync(email);
+        await _page.GetByRole(AriaRole.Textbox, new() { Name = PasswordTextboxName }).FillAsync(password);
+        await _page.GetByRole(AriaRole.Button, new() { Name = LoginSubmitButtonText }).ClickAsync();
+    }
+
+
+
+    
 
 
 }

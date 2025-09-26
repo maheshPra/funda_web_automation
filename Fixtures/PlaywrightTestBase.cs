@@ -24,30 +24,29 @@ public class PlaywrightTestBase : IAsyncLifetime
         Playwright?.Dispose();
     }
 
-protected async Task<IPage> CreateFundaPageAsync()
-{
-    var userAgent = Environment.GetEnvironmentVariable("FUNDA_USER_AGENT");
-    if (string.IsNullOrEmpty(userAgent))
-        throw new InvalidOperationException("FUNDA_USER_AGENT environment variable is not set.");
-
-    var context = await Browser.NewContextAsync(new BrowserNewContextOptions
+    protected async Task<IPage> CreateFundaPageAsync()
     {
-        UserAgent = userAgent,
-        ViewportSize = new ViewportSize
+        var userAgent = Environment.GetEnvironmentVariable("FUNDA_USER_AGENT");
+        if (string.IsNullOrEmpty(userAgent))
+            throw new InvalidOperationException("FUNDA_USER_AGENT environment variable is not set.");
+
+        var context = await Browser.NewContextAsync(new BrowserNewContextOptions
         {
-            Width = 1920,
-            Height = 1080
-        }
-    });
+            UserAgent = userAgent,
+            ViewportSize = new ViewportSize
+            {
+                Width = 1920,
+                Height = 1080
+            }
+        });
 
-    var page = await context.NewPageAsync();
+        var page = await context.NewPageAsync();
 
-    // Optional: maximize window in non-headless mode
-    if (!Headless)
-        await page.SetViewportSizeAsync(1920, 1080);
+        // Optional: maximize window in non-headless mode
+        if (!Headless)
+            await page.SetViewportSizeAsync(1920, 1080);
 
-    return page;
-}
-
+        return page;
+    }
 
 }

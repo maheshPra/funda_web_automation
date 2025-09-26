@@ -45,7 +45,28 @@ public class FundaTests : PlaywrightTestBase
         await searchResultsPage.VerifyResultsMatchSelectedLocation();
         await searchResultsPage.SearchWithPriceFilter();
         await searchResultsPage.VerifyResultsMatchedPriceFilter();
-        // await page.PauseAsync();
     }
+
+    [Fact]
+    public async Task LoginAndLogout()
+    {
+        var page = await CreateFundaPageAsync();
+        var (landingPage, _, headerPage) = await InitializePagesAsync(page);
+
+        await GoToLandingPageAsync(landingPage, headerPage);
+        await headerPage.ClickInloggenButton();
+        await headerPage.Login("maheshrathnayake13@gmail.com", "Secret@123");
+     
+    }
+
+    // [Fact]
+    // public async Task VerifyCardAndDetailsPageInfoDisplayed()
+    // {
+    //     var page = await CreateFundaPageAsync();
+    //     var (landingPage, searchResultsPage, headerPage) = await InitializePagesAsync(page);
+    //     await GoToLandingPageAsync(landingPage, headerPage);
+    //     await landingPage.SearchWithLocationFilter(TestData.City);
+    //     await page.PauseAsync();
+    // }
 
 }
