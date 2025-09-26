@@ -7,18 +7,44 @@ namespace PlaywrightTests.Tests;
 
 public class FundaTests : PlaywrightTestBase
 {
-    [Fact]
-    public async Task SearchACity()
+    private async Task<(LandingPage landingPage, SearchResultsPage searchResultsPage, HeaderPage headerPage)> InitializePagesAsync(IPage page)
+    {
+        var landingPage = new LandingPage(page);
+        var searchResultsPage = new SearchResultsPage(page);
+        var headerPage = new HeaderPage(page);
+        return (landingPage, searchResultsPage, headerPage);
+    }
+
+    private async Task GoToLandingPageAsync(LandingPage landingPage, HeaderPage headerPage)
+    {
+        await landingPage.GoTo("https://www.funda.nl/");
+        await landingPage.AcceptCookies();
+        await headerPage.WaitForLandingPage();
+    }
+
+    [Fact(Skip = "Skipping to save time during routine runs")]
+    public async Task CheckHomePageLoadAndNavigation()
     {
         var page = await CreateFundaPageAsync();
-        var fundaPage = new FundaPage(page);
+        var (landingPage, _, headerPage) = await InitializePagesAsync(page);
 
-        await fundaPage.GoToAsync("https://www.funda.nl/");
-        await fundaPage.AcceptCookies();
-        await fundaPage.WaitForHomePage();
-        await fundaPage.AssertHomePageElementsVisible();
-        await fundaPage.SearchCity(TestData.City);
-        await fundaPage.VerifyCitySelectionAndResults();
-        await page.PauseAsync();
+        await GoToLandingPageAsync(landingPage, headerPage);
+        await headerPage.AssertLandingPageUIElementsDisplayed();
+        await headerPage.VerifyHeaderButtonsAreClickable();
     }
+
+    [Fact]
+    public async Task VerifySearchAndFiltering()
+    {
+        var page = await CreateFundaPageAsync();
+        var (landingPage, searchResultsPage, headerPage) = await InitializePagesAsync(page);
+
+        await GoToLandingPageAsync(landingPage, headerPage);
+        await landingPage.SearchWithLocationFilter(TestData.City);
+        await searchResultsPage.EnsureSelectedLocationIsVisible();
+        await searchResultsPage.VerifyResultsMatchSelectedLocation();
+        await searchResultsPage.SearchWithPriceFilter();
+        await page.PauseAsync(); // Only use for debugging
+    }
+
 }

@@ -24,7 +24,7 @@ public class PlaywrightTestBase : IAsyncLifetime
         Playwright?.Dispose();
     }
 
-    protected async Task<IPage> CreateFundaPageAsync()
+protected async Task<IPage> CreateFundaPageAsync()
 {
     var userAgent = Environment.GetEnvironmentVariable("FUNDA_USER_AGENT");
     if (string.IsNullOrEmpty(userAgent))
@@ -32,10 +32,22 @@ public class PlaywrightTestBase : IAsyncLifetime
 
     var context = await Browser.NewContextAsync(new BrowserNewContextOptions
     {
-        UserAgent = userAgent
+        UserAgent = userAgent,
+        ViewportSize = new ViewportSize
+        {
+            Width = 1920,
+            Height = 1080
+        }
     });
 
-    return await context.NewPageAsync();
+    var page = await context.NewPageAsync();
+
+    // Optional: maximize window in non-headless mode
+    if (!Headless)
+        await page.SetViewportSizeAsync(1920, 1080);
+
+    return page;
 }
+
 
 }
