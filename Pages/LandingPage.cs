@@ -41,11 +41,8 @@ public class LandingPage
     if (await cookieButton.IsVisibleAsync())
     {
         await cookieButton.ClickAsync();
-        // Optionally, wait for any resulting UI changes (small pause)
-        // This is dynamic and short, so it won't block unnecessarily
         await _page.WaitForLoadStateAsync(LoadState.DOMContentLoaded);
     }
-    // Continue normally if cookie popup doesn't appear
 }
 
     //search for a city and select it from the dropdown

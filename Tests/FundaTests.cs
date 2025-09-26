@@ -22,7 +22,7 @@ public class FundaTests : PlaywrightTestBase
         await headerPage.WaitForLandingPage();
     }
 
-    [Fact(Skip = "Skipping to save time during routine runs")]
+    [Fact]
     public async Task CheckHomePageLoadAndNavigation()
     {
         var page = await CreateFundaPageAsync();
@@ -44,7 +44,8 @@ public class FundaTests : PlaywrightTestBase
         await searchResultsPage.EnsureSelectedLocationIsVisible();
         await searchResultsPage.VerifyResultsMatchSelectedLocation();
         await searchResultsPage.SearchWithPriceFilter();
-        await page.PauseAsync(); // Only use for debugging
+        await searchResultsPage.VerifyResultsMatchedPriceFilter();
+        // await page.PauseAsync();
     }
 
 }
