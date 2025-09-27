@@ -1,0 +1,4 @@
+"DESCRIPTION","DURATION IN MS","NAME","PARENT SUITE","START TIME","STATUS","STOP TIME","SUB SUITE","SUITE","TEST CLASS","TEST METHOD"
+"","11366","PlaywrightTests.Tests.FundaTests.LoginAndLogout","","2025-09-27","passed","2025-09-27","","","PlaywrightTests.Tests.FundaTests","PlaywrightTests.Tests.FundaTests.LoginAndLogout"
+"","2092","PlaywrightTests.Tests.FundaTests.CheckLandingPageLoadAndNavigation","","2025-09-27","passed","2025-09-27","","Funda SMOKE Tests","PlaywrightTests.Tests.FundaTests","PlaywrightTests.Tests.FundaTests.CheckLandingPageLoadAndNavigation"
+"","6237","PlaywrightTests.Tests.FundaTests.VerifySearchAndFiltering","","2025-09-27","passed","2025-09-27","","Funda SMOKE Tests","PlaywrightTests.Tests.FundaTests","PlaywrightTests.Tests.FundaTests.VerifySearchAndFiltering"

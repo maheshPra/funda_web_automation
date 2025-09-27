@@ -2,6 +2,7 @@ using Microsoft.Playwright;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
 using System.Globalization;
+using Xunit;
 
 namespace PlaywrightTests.Pages;
 
@@ -80,9 +81,6 @@ public class SearchResultsPage
         });
         await _page.WaitForTimeoutAsync(500);
 
-        // var text = await _page.Locator(PriceCardContainer).InnerTextAsync();
-        // Console.WriteLine(text);
-
         int minPrice = 300_000;
         int maxPrice = 500_000;
 
@@ -109,7 +107,7 @@ public class SearchResultsPage
             else
             {
                 //fail if parsing fails
-                Assert.True(false, $"Failed to parse price: '{priceText}'");
+                Assert.Fail($"Failed to parse price: '{priceText}'");
             }
         }
     }

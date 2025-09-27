@@ -1,5 +1,7 @@
 using Microsoft.Playwright;
 using Xunit;
+using Allure.Net.Commons;
+using System.IO;
 
 namespace PlaywrightTests;
 
@@ -11,6 +13,7 @@ public class PlaywrightTestBase : IAsyncLifetime
 
     public async Task InitializeAsync()
     {
+        Environment.SetEnvironmentVariable("ALLURE_CONFIG", "allureConfig.json");
         Playwright = await Microsoft.Playwright.Playwright.CreateAsync();
         Browser = await Playwright.Chromium.LaunchAsync(new BrowserTypeLaunchOptions
         {
@@ -49,4 +52,10 @@ public class PlaywrightTestBase : IAsyncLifetime
         return page;
     }
 
+    protected async Task CaptureScreenshotAsync(IPage page, string name = "screenshot")
+    {
+        var screenshotBytes = await page.ScreenshotAsync();
+        Console.WriteLine("Capturing screenshot and adding to Allure...");
+        AllureApi.AddAttachment(name, "image/png", screenshotBytes);
+    }
 }
