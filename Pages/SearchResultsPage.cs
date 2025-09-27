@@ -12,15 +12,22 @@ public class SearchResultsPage
     private readonly IPage _page;
 
     private static readonly Regex CityExactRegex = new Regex("^Nieuw-Amsterdam$");
-    private const string PageHeaderTestId = "pageHeader";
-    private const string PriceFromInput = "[id$='price_from']";
-    private const string PriceToInput = "[id='price_to']";
-    private const string MinPriceOptionTestId = "FilterRangepriceMin";
-    private const string MaxPriceOptionTestId = "FilterRangepriceMax";
-    private const string MinPriceText = "€ 300.000";
-    private const string MaxPriceText = "€ 500.000";
-    private const string PriceCardContainer = "//div[@class='flex flex-col gap-3 mt-4']";
-    private const string PriceCard = "//div[@class='flex flex-col gap-3 mt-4']//div[contains(text(),'€')]";
+    private const string pageHeaderTestId = "pageHeader";
+    private const string priceFromInput = "[id$='price_from']";
+    private const string priceToInput = "[id='price_to']";
+    private const string minPriceOptionTestId = "FilterRangepriceMin";
+    private const string maxPriceOptionTestId = "FilterRangepriceMax";
+    private const string minPriceText = "€ 300.000";
+    private const string maxPriceText = "€ 500.000";
+    private static readonly string PropertyImageContainerLocator = "[class='relative overflow-hidden rounded-md @lg:flex @lg:shrink-0']";
+    private const string priceCard = "//div[@class='flex flex-col gap-3 mt-4']//div[contains(text(),'€')]";
+    private static readonly string StreetAndHouseNumberLocator = "[class$='flex font-semibold']";
+    private static readonly string PostalCodeAndCityLocator = "[class$='truncate text-neutral-80']";
+    private static readonly string PropertyPriceLocator = "[class$='flex gap-2']";
+    private static readonly Regex StreetAndHouseNumberRegex = new Regex(@"^[A-Za-z\s]+ \d+[A-Za-z]?\s*$");
+    private static readonly Regex PostalCodeAndCityRegex = new Regex(@"^\d{4}\s[A-Z]{2}\s.+$");
+    private static readonly Regex PropertyPriceRegex = new Regex(@"^€\s\d{1,3}(\.\d{3})*\s(k\.k\.|v\.o\.n\.)$");
+
 
     // Constructor
     public SearchResultsPage(IPage page)
@@ -30,14 +37,14 @@ public class SearchResultsPage
 
     // Methods / Actions
     // Verify that the selected city is displayed correctly in the search textbox
-    public async Task EnsureSelectedLocationIsVisible()
+    public async Task ensureSelectedLocationIsVisible()
     {
         await _page.Locator("div").Filter(new() { HasTextRegex = CityExactRegex }).First.WaitForAsync();
 
     }
 
     // Verify that the results match the selected city filter by checking URL and header text
-    public async Task VerifyResultsMatchSelectedLocation()
+    public async Task verifyResultsMatchSelectedLocation()
     {
         await _page.WaitForURLAsync(url => url.Contains("nieuw-amsterdam"));
         Assert.Contains("nieuw-amsterdam", _page.Url, StringComparison.OrdinalIgnoreCase);
@@ -46,34 +53,34 @@ public class SearchResultsPage
                                       .Filter(new() { HasTextRegex = CityExactRegex })
                                       .First
                                       .InnerTextAsync();
-        var headerText = await _page.GetByTestId(PageHeaderTestId).InnerTextAsync();
+        var headerText = await _page.GetByTestId(pageHeaderTestId).InnerTextAsync();
         Assert.Contains(selectedText, headerText, StringComparison.OrdinalIgnoreCase);
     }
 
     // Apply a price filter to the search results
-    public async Task SearchWithPriceFilter()
+    public async Task searchWithPriceFilter()
     {
         // Wait for the page and network to finish
         await _page.WaitForLoadStateAsync(LoadState.NetworkIdle);
 
         // Click "Price from" and select minimum price
-        var priceFrom = _page.Locator(PriceFromInput);
+        var priceFrom = _page.Locator(priceFromInput);
         await priceFrom.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible });
         await priceFrom.ClickAsync();
-        await _page.GetByTestId(MinPriceOptionTestId).GetByText(MinPriceText).ClickAsync();
+        await _page.GetByTestId(minPriceOptionTestId).GetByText(minPriceText).ClickAsync();
 
         // Click "Price to" and select maximum price
-        var priceTo = _page.Locator(PriceToInput);
+        var priceTo = _page.Locator(priceToInput);
         await priceTo.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible });
         await priceTo.ClickAsync();
-        await _page.GetByTestId(MaxPriceOptionTestId).GetByText(MaxPriceText).ClickAsync();
+        await _page.GetByTestId(maxPriceOptionTestId).GetByText(maxPriceText).ClickAsync();
 
     }
     // Verify that the results match the applied price filter
-    public async Task VerifyResultsMatchedPriceFilter()
+    public async Task verifyResultsMatchedPriceFilter()
     {
         // Wait for first price element to ensure results are loaded
-        var firstPrice = _page.Locator(PriceCard).First;
+        var firstPrice = _page.Locator(priceCard).First;
         await firstPrice.WaitForAsync(new LocatorWaitForOptions
         {
             State = WaitForSelectorState.Visible,
@@ -85,7 +92,7 @@ public class SearchResultsPage
         int maxPrice = 500_000;
 
         // Get all the price elements
-        var priceElements = await _page.Locator(PriceCard).AllAsync();
+        var priceElements = await _page.Locator(priceCard).AllAsync();
 
         foreach (var priceElement in priceElements)
         {
@@ -110,5 +117,36 @@ public class SearchResultsPage
                 Assert.Fail($"Failed to parse price: '{priceText}'");
             }
         }
+
+    }
+
+    public async Task verifyStreetNameAndHouseNumber()
+    {
+        var streetAndHouseNo = await _page.Locator(StreetAndHouseNumberLocator).First.InnerTextAsync();
+        Assert.Matches(StreetAndHouseNumberRegex, streetAndHouseNo);
+    }
+
+    public async Task verifyPostalCodeAndCity()
+    {
+        var postalCodeAndCity = await _page.Locator(PostalCodeAndCityLocator).First.InnerTextAsync();
+        Assert.Matches(PostalCodeAndCityRegex, postalCodeAndCity);
+    }
+
+    public async Task verifyPropertyPrice()
+    {
+        var propertyPrice = await _page.Locator(PropertyPriceLocator).First.InnerTextAsync();
+        Assert.Matches(PropertyPriceRegex, propertyPrice);
+    }
+
+    public async Task verifyPropertyImageExists()
+    {
+        var imageLocator = _page.Locator(PropertyImageContainerLocator).Locator("img");
+        bool hasImage = await imageLocator.CountAsync() > 0;
+
+        Console.WriteLine(hasImage
+            ? "Property image exists."
+            : "No property image found.");
+
+        Assert.True(hasImage, "Expected a property image inside the container.");
     }
 }

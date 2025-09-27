@@ -9,10 +9,10 @@ public class LandingPage
     private readonly IPage _page;
 
     // Locators
-    private const string AllesAccepteren = "Alles accepteren";
-    private const string SearchBoxTestId = "search-box";
-    private const string CityOptionText = "Nieuw-Amsterdam Plaats in";
-    private const string MeldJeAanButtonText = "Meld je aan";
+    private const string allesAccepteren = "Alles accepteren";
+    private const string searchBoxTestId = "search-box";
+    private const string cityOptionText = "Nieuw-Amsterdam Plaats in";
+    private const string meldJeAanButtonText = "Meld je aan";
 
 
     // Constructor
@@ -28,9 +28,9 @@ public class LandingPage
     }
 
     // Accept cookies on the page
-    public async Task AcceptCookies()
+    public async Task acceptCookies()
     {
-        var cookieButton = _page.GetByRole(AriaRole.Button, new() { Name = AllesAccepteren });
+        var cookieButton = _page.GetByRole(AriaRole.Button, new() { Name = allesAccepteren });
 
         // Check if the button exists and is visible
         if (await cookieButton.IsVisibleAsync())
@@ -41,16 +41,16 @@ public class LandingPage
     }
 
     // Assert key UI elements are visible
-    public async Task AssertLandingPageUIElementsVisible()
+    public async Task assertLandingPageUIElementsVisible()
     {
-        Assert.True(await _page.GetByTestId(SearchBoxTestId).IsVisibleAsync());
-        Assert.True(await _page.GetByRole(AriaRole.Button, new() { Name = MeldJeAanButtonText, Exact = true }).IsVisibleAsync());
+        Assert.True(await _page.GetByTestId(searchBoxTestId).IsVisibleAsync());
+        Assert.True(await _page.GetByRole(AriaRole.Button, new() { Name = meldJeAanButtonText, Exact = true }).IsVisibleAsync());
     }
 
     // Search for a city and select it from the dropdown
-    public async Task SearchWithLocationFilter(string city)
+    public async Task searchWithLocationFilter(string city)
     {
-        await _page.GetByTestId(SearchBoxTestId).FillAsync(city);
-        await _page.GetByText(CityOptionText).ClickAsync();
+        await _page.GetByTestId(searchBoxTestId).FillAsync(city);
+        await _page.GetByText(cityOptionText).ClickAsync();
     }
 }
