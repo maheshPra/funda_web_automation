@@ -9,12 +9,14 @@ namespace PlaywrightTests.Tests;
 
 public class FundaTests : PlaywrightTestBase
 {
-    private async Task<(LandingPage landingPage, SearchResultsPage searchResultsPage, HeaderPage headerPage)> InitializePagesAsync(IPage page)
+    private async Task<(LandingPage landingPage, SearchResultsPage searchResultsPage, HeaderPage headerPage, LoginPage loginPage, PropertyDetailsPage propertyDetailsPage)> InitializePagesAsync(IPage page)
     {
         var landingPage = new LandingPage(page);
         var searchResultsPage = new SearchResultsPage(page);
         var headerPage = new HeaderPage(page);
-        return (landingPage, searchResultsPage, headerPage);
+        var loginPage = new LoginPage(page);
+        var propertyDetailsPage = new PropertyDetailsPage(page);
+        return (landingPage, searchResultsPage, headerPage, loginPage, propertyDetailsPage);
     }
 
     private async Task GoToLandingPage(LandingPage landingPage, HeaderPage headerPage)
@@ -31,7 +33,7 @@ public class FundaTests : PlaywrightTestBase
     public async Task CheckLandingPageLoadAndNavigation()
     {
         var page = await CreateFundaPageAsync();
-        var (landingPage, _, headerPage) = await InitializePagesAsync(page);
+        var (landingPage, _, headerPage, _, _) = await InitializePagesAsync(page);
 
         AllureLifecycle.Instance.StartStep(new StepResult { name = "Navigate to LandingPage" });
         await GoToLandingPage(landingPage, headerPage);
@@ -59,7 +61,7 @@ public class FundaTests : PlaywrightTestBase
     public async Task VerifySearchAndFiltering()
     {
         var page = await CreateFundaPageAsync();
-        var (landingPage, searchResultsPage, headerPage) = await InitializePagesAsync(page);
+        var (landingPage, searchResultsPage, headerPage, _, _) = await InitializePagesAsync(page);
 
 
         AllureLifecycle.Instance.StartStep(new StepResult { name = "Navigate to LandingPage" });
@@ -102,7 +104,7 @@ public class FundaTests : PlaywrightTestBase
     public async Task LoginAndLogout()
     {
         var page = await CreateFundaPageAsync();
-        var (landingPage, _, headerPage) = await InitializePagesAsync(page);
+        var (landingPage, _, headerPage, loginPage, _) = await InitializePagesAsync(page);
 
         AllureLifecycle.Instance.StartStep(new StepResult { name = "Navigate to LandingPage" });
         await GoToLandingPage(landingPage, headerPage);
@@ -113,11 +115,11 @@ public class FundaTests : PlaywrightTestBase
         AllureLifecycle.Instance.StopStep();
 
         AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify navigation to the Login page and validate its content" });
-        await headerPage.verifyLoginPageIsDisplayed();
+        await loginPage.verifyLoginPageIsDisplayed();
         AllureLifecycle.Instance.StopStep();
 
         AllureLifecycle.Instance.StartStep(new StepResult { name = "Login with valid credentials" });
-        await headerPage.login("maheshrathnayake13@gmail.com", "Secret@123");
+        await loginPage.login("maheshrathnayake13@gmail.com", "Secret@123");
         await CaptureScreenshotAsync(page, "LoggedIn Screenshot");
         AllureLifecycle.Instance.StopStep();
 
@@ -139,12 +141,12 @@ public class FundaTests : PlaywrightTestBase
 
     [AllureSuite("Funda SMOKE Tests")]
     [AllureFeature("Homepage")]
-    [AllureStory("Verify Login and logout functionality")]
+    [AllureStory("Verify property card and details page information")]
     [Fact]
     public async Task VerifyCardAndDetailsPageInfoDisplayed()
     {
         var page = await CreateFundaPageAsync();
-         var (landingPage, searchResultsPage, headerPage) = await InitializePagesAsync(page);
+        var (landingPage, searchResultsPage, headerPage, _, propertyDetailsPage) = await InitializePagesAsync(page);
 
         AllureLifecycle.Instance.StartStep(new StepResult { name = "Navigate to LandingPage" });
         await GoToLandingPage(landingPage, headerPage);
@@ -161,18 +163,47 @@ public class FundaTests : PlaywrightTestBase
         AllureLifecycle.Instance.StopStep();
 
         AllureLifecycle.Instance.StartStep(new StepResult { name = "Ensure the address includes both street name and house number on the Card" });
-        await searchResultsPage.verifyStreetNameAndHouseNumber();
+        var streetAndHouseNo = await searchResultsPage.verifyStreetNameAndHouseNumber();
         AllureLifecycle.Instance.StopStep();
 
         AllureLifecycle.Instance.StartStep(new StepResult { name = "Validate postal code and city format on the card" });
-        await searchResultsPage.verifyPostalCodeAndCity();
+        var postalCodeAndCity = await searchResultsPage.verifyPostalCodeAndCity();
         AllureLifecycle.Instance.StopStep();
 
         AllureLifecycle.Instance.StartStep(new StepResult { name = "Validate property price on the card" });
-        await searchResultsPage.verifyPropertyPrice(); 
+        var propertyPrice = await searchResultsPage.verifyPropertyPrice();
         AllureLifecycle.Instance.StopStep();
 
+        AllureLifecycle.Instance.StartStep(new StepResult { name = "Click the first property card to navigate to the details page" });
+        await searchResultsPage.clickFirstPropertyCard();
+        AllureLifecycle.Instance.StopStep();
 
-        await page.PauseAsync();    
+        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify navigation to the property details page" });
+        await propertyDetailsPage.verifyNavigationToPropertyDetailsPage(streetAndHouseNo);
+        await CaptureScreenshotAsync(page, "PropertyDetailsPage Screenshot");
+        AllureLifecycle.Instance.StopStep();
+
+        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify that the street name and house number on the property details page match the values from the card." });
+        await propertyDetailsPage.verifyPropertyDetailsMatchCardStreetAndHouseNumber(streetAndHouseNo);
+        AllureLifecycle.Instance.StopStep();
+
+        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify that the postal code and city on the property details page match the values from the card." });
+        await propertyDetailsPage.verifyPropertyDetailsMatchCardpostalCodeAndCity(postalCodeAndCity);
+        AllureLifecycle.Instance.StopStep();
+
+        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify that the property price on the property details page matches the value from the card." });
+        await propertyDetailsPage.verifyPropertyDetailsMatchCardPropertyPrice(propertyPrice);
+        AllureLifecycle.Instance.StopStep();
+
+        AllureLifecycle.Instance.StartStep(new StepResult { name = "Check that the property image is displayed on the property details page" });
+        await propertyDetailsPage.checkPropertyImageOnPropertyDetails();
+        AllureLifecycle.Instance.StopStep();
+
+        
+
+
+
+
+      
     }
 }

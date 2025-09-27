@@ -10,7 +10,6 @@ public class SearchResultsPage
 {
     // Locators 
     private readonly IPage _page;
-
     private static readonly Regex CityExactRegex = new Regex("^Nieuw-Amsterdam$");
     private const string pageHeaderTestId = "pageHeader";
     private const string priceFromInput = "[id$='price_from']";
@@ -120,24 +119,30 @@ public class SearchResultsPage
 
     }
 
-    public async Task verifyStreetNameAndHouseNumber()
+   //Verify that the street name and house no is correct
+    public async Task<string> verifyStreetNameAndHouseNumber()
     {
         var streetAndHouseNo = await _page.Locator(StreetAndHouseNumberLocator).First.InnerTextAsync();
         Assert.Matches(StreetAndHouseNumberRegex, streetAndHouseNo);
+        return streetAndHouseNo;
     }
 
-    public async Task verifyPostalCodeAndCity()
+    // Verify that the postal code and city format is correct
+    public async Task<string> verifyPostalCodeAndCity()
     {
         var postalCodeAndCity = await _page.Locator(PostalCodeAndCityLocator).First.InnerTextAsync();
         Assert.Matches(PostalCodeAndCityRegex, postalCodeAndCity);
+        return postalCodeAndCity;
     }
 
-    public async Task verifyPropertyPrice()
+    public async Task<string> verifyPropertyPrice()
     {
         var propertyPrice = await _page.Locator(PropertyPriceLocator).First.InnerTextAsync();
         Assert.Matches(PropertyPriceRegex, propertyPrice);
+        return propertyPrice;
     }
 
+// Verify that the property image container exists on the search results page
     public async Task verifyPropertyImageExists()
     {
         var imageLocator = _page.Locator(PropertyImageContainerLocator).Locator("img");
@@ -148,5 +153,12 @@ public class SearchResultsPage
             : "No property image found.");
 
         Assert.True(hasImage, "Expected a property image inside the container.");
+    }
+
+    // Click the first property card to navigate to the property details page
+    public async Task clickFirstPropertyCard()
+    {
+        var firstPropertyCard = _page.Locator(PropertyImageContainerLocator).First;
+        await firstPropertyCard.ClickAsync();
     }
 }

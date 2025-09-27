@@ -6,10 +6,10 @@ namespace PlaywrightTests.Pages;
 
 public class HeaderPage
 {
-    // Locators
+    
     private readonly IPage _page;
 
-    // Header elements
+   // Locators
     private const string fundaLinkText = "Funda";
     private const string kopenButtonId = "#headlessui-menu-button-v-0-0-0-21";
     private const string hurenButtonId = "#headlessui-menu-button-v-0-0-0-27";
@@ -19,16 +19,9 @@ public class HeaderPage
     private const string inloggenButtonText = "Inloggen";
     private const string loggenButtonText = "Account";
     private const string accountButtonId = "#headlessui-menu-button-v-0-1-0-3";
-    private const string loginHeadingText = "Log in";
+    public const string loginHeadingText = "Log in";
     private const string logoutMenuId = "#headlessui-menu-items-v-0-1-0-4";
     private const string logoutButtonText = "Uitloggen";
-
-    // Login page elements (should go to new Page file)
-    private const string emailTextboxName = "E-mailadres";
-    private const string passwordTextboxName = "Wachtwoord";
-    private const string loginSubmitButtonText = "Log in";
-    private const string emailLabelText = "E-mailadres";
-    private const string passwordLabelText = "Wachtwoord";
 
     // Constructor
     public HeaderPage(IPage page)
@@ -62,6 +55,7 @@ public class HeaderPage
         Assert.True(await _page.Locator(verkopenButtonId).IsEnabledAsync(), "Verkopen button should be enabled before clicking.");
     }
 
+    // Click the Inloggen button to navigate to the login page
     public async Task clickInloggenButton()
     {
         var inloggenButton = _page.Locator($"button:has-text('{inloggenButtonText}')").First;
@@ -97,23 +91,5 @@ public class HeaderPage
     public async Task verifySuccessfulLogout()
     {
         Assert.True(await _page.GetByRole(AriaRole.Button, new() { Name = inloggenButtonText, Exact = true }).IsVisibleAsync());
-    }
-
-    ////////// Should go to new Page file //////////
-
-    // Verify Login Page details
-    public async Task verifyLoginPageIsDisplayed()
-    {
-        await _page.GetByRole(AriaRole.Heading, new() { Name = loginHeadingText }).IsVisibleAsync();
-        await _page.GetByText(emailLabelText).IsVisibleAsync();
-        await _page.GetByText(passwordLabelText, new() { Exact = true }).IsVisibleAsync();
-    }
-
-    // Enter username, password and login
-    public async Task login(string email, string password)
-    {
-        await _page.GetByRole(AriaRole.Textbox, new() { Name = emailTextboxName }).FillAsync(email);
-        await _page.GetByRole(AriaRole.Textbox, new() { Name = passwordTextboxName }).FillAsync(password);
-        await _page.GetByRole(AriaRole.Button, new() { Name = loginSubmitButtonText }).ClickAsync();
     }
 }
