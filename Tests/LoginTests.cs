@@ -8,7 +8,7 @@ using Allure.Net.Commons;
 namespace PlaywrightTests.Tests;
 
 [AllureSuite("Funda SMOKE Tests")]
-[AllureFeature("Authentication")]
+[AllureFeature("Login and Logout")]
 public class LoginTests : PlaywrightTestBase
 {
     [AllureStory("Verify Login and logout functionality")]

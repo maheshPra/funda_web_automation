@@ -9,7 +9,7 @@ using Allure.Net.Commons;
 namespace PlaywrightTests.Tests;
 
 [AllureSuite("Funda SMOKE Tests")]
-[AllureFeature("Search Sorting")]
+[AllureFeature("Sorting")]
 public class SortingTests : PlaywrightTestBase
 {
     [AllureStory("Verify sorting functionality in search results page")]

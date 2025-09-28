@@ -178,8 +178,6 @@ public class SearchResultsPage
     public async Task selectPriceSorting(string optionLabel)
     {
         var dropdown = _page.Locator(sortingDropdown);
-
-        // Wait for it to be visible
         await dropdown.WaitForAsync();
 
         // Select the option by its visible text (label)

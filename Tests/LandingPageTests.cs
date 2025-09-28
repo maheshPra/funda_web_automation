@@ -8,7 +8,7 @@ using Allure.Net.Commons;
 namespace PlaywrightTests.Tests;
 
 [AllureSuite("Funda SMOKE Tests")]
-[AllureFeature("Homepage")]
+[AllureFeature("LandingPage")]
 public class LandingPageTests : PlaywrightTestBase
 {
     [AllureStory("Check LandingPage load and navigation")]

@@ -55,8 +55,6 @@ public class PropertyDetailsPage
     {
         var streetAndHouseNoPropertyDetails = _page.Locator(StreetAndHouseNumberLocator);
         await streetAndHouseNoPropertyDetails.WaitForAsync(new() { State = WaitForSelectorState.Visible });
-
-        // Capture text from the element
         var actualText = await streetAndHouseNoPropertyDetails.InnerTextAsync();
 
         // Normalize both strings (trim spaces, remove newlines) before comparing
@@ -66,20 +64,15 @@ public class PropertyDetailsPage
         Console.WriteLine($"Expected: {normalizedExpected}");
         Console.WriteLine($"Actual  : {normalizedActual}");
 
-        // Assert equality
         Assert.Equal(normalizedExpected, normalizedActual);
     }
 
     // Verify that property details (postal code, city) match those from the card
     public async Task verifyPropertyDetailsMatchCardpostalCodeAndCity(String postalCodeAndCity)
     {
-        // Capture text from the element
         var postalCodeAndCityPropertyDetails = await _page.Locator(PostalCodeAndCityLocator).InnerTextAsync();
-
         Console.WriteLine($"Expected: {postalCodeAndCity}");
         Console.WriteLine($"Actual  : {postalCodeAndCityPropertyDetails}");
-
-        // Assert equality
         Assert.Equal(postalCodeAndCity, postalCodeAndCityPropertyDetails);
     }
 
@@ -88,21 +81,16 @@ public class PropertyDetailsPage
     {
         var priceOnPropertyDetails = await _page.Locator(PropertyPriceLocator).InnerTextAsync();
         Console.WriteLine($"Property Price on Details Page: {priceOnPropertyDetails}");
-
         // Validate format
         Assert.Matches(PropertyPriceRegex, priceOnPropertyDetails);
-
-        // Assert that it matches the expected price
         Assert.Equal(propertyPrice.Trim(), priceOnPropertyDetails.Trim());
     }
 
     // Check that the property image is displayed on the property details page
     public async Task checkPropertyImageOnPropertyDetails()
     {
-        // Wait for the container to appear
         var containerLocator = _page.Locator(PropertyImagesContainerLocator);
         await containerLocator.WaitForAsync();
-
         // Find all images inside the container
         var imageLocator = containerLocator.Locator("img");
         var imageCount = await imageLocator.CountAsync();
@@ -110,7 +98,7 @@ public class PropertyDetailsPage
         Console.WriteLine(imageCount > 0
             ? $"Property has {imageCount} image(s) on the details page."
             : "No property images found on the details page.");
-
+            
         // Assert at least one image exists
         Assert.True(imageCount > 0, "Expected at least one property image on the details page.");
     }
