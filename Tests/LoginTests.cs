@@ -21,9 +21,7 @@ public class LoginTests : PlaywrightTestBase
         var loginPage = new LoginPage(page);
 
         AllureLifecycle.Instance.StartStep(new StepResult { name = "Navigate to LandingPage" });
-        await landingPage.GoTo("https://www.funda.nl/");
-        await landingPage.acceptCookies();
-        await headerPage.waitForLandingPage();
+        await goToLandingPage(landingPage, headerPage);
         AllureLifecycle.Instance.StopStep();
 
         AllureLifecycle.Instance.StartStep(new StepResult { name = "Click Inloggen button" });

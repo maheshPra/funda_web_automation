@@ -23,9 +23,7 @@ public class PropertyDetailsTests : PlaywrightTestBase
         var propertyDetailsPage = new PropertyDetailsPage(page);
 
         AllureLifecycle.Instance.StartStep(new StepResult { name = "Navigate to LandingPage" });
-        await landingPage.GoTo("https://www.funda.nl/");
-        await landingPage.acceptCookies();
-        await headerPage.waitForLandingPage();
+        await goToLandingPage(landingPage, headerPage);
         AllureLifecycle.Instance.StopStep();
 
         AllureLifecycle.Instance.StartStep(new StepResult { name = "Search with location filter" });
