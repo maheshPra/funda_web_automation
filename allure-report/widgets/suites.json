@@ -1,1 +1,1 @@
-{"total":2,"items":[{"uid":"889b7e5f473b53d073713fc35ea969d8","name":"Funda SMOKE Tests","statistic":{"failed":0,"broken":0,"skipped":0,"passed":2,"unknown":0,"total":2}}]}
+{"total":1,"items":[{"uid":"889b7e5f473b53d073713fc35ea969d8","name":"Funda SMOKE Tests","statistic":{"failed":0,"broken":1,"skipped":0,"passed":4,"unknown":0,"total":5}}]}

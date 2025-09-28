@@ -199,11 +199,55 @@ public class FundaTests : PlaywrightTestBase
         await propertyDetailsPage.checkPropertyImageOnPropertyDetails();
         AllureLifecycle.Instance.StopStep();
 
-        
+    }
 
+    [AllureSuite("Funda SMOKE Tests")]
+    [AllureFeature("Homepage")]
+    [AllureStory("Verify sorting functionality in search results page")]
+    [Fact]
+    public async Task verifySortingFunctionality()
+    {
+        var page = await CreateFundaPageAsync();
+        var (landingPage, searchResultsPage, headerPage, _, propertyDetailsPage) = await InitializePagesAsync(page);
 
+        AllureLifecycle.Instance.StartStep(new StepResult { name = "Navigate to LandingPage" });
+        await GoToLandingPage(landingPage, headerPage);
+        AllureLifecycle.Instance.StopStep();
 
+        AllureLifecycle.Instance.StartStep(new StepResult { name = "Search with location filter" });
+        await landingPage.searchWithLocationFilter(TestData.City);
+        AllureLifecycle.Instance.StopStep();
 
-      
+        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify that the selected location is displayed in the search box" });
+        await searchResultsPage.ensureSelectedLocationIsVisible();
+        await CaptureScreenshotAsync(page, "SelectedLocation Screenshot");
+        AllureLifecycle.Instance.StopStep();
+
+        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify that search results match the selected location" });
+        await searchResultsPage.verifyResultsMatchSelectedLocation();
+        AllureLifecycle.Instance.StopStep();
+
+        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify that the sorting dropdown has the default option selected" });
+        await searchResultsPage.verifySortingDropdownHasDefaultOption();
+        await CaptureScreenshotAsync(page, "DefaultSortingOption Screenshot");
+        AllureLifecycle.Instance.StopStep();
+
+        AllureLifecycle.Instance.StartStep(new StepResult { name = "Select sorting option: Price - low to high" });
+        await searchResultsPage.selectPriceSorting("Prijs - laag naar hoog");
+        AllureLifecycle.Instance.StopStep();
+
+        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify that the results are correctly sorted by price in ascending order (low to high)" });
+        await searchResultsPage.verifySortingByPriceLowToHigh();
+        await CaptureScreenshotAsync(page, "SelectedLocation Screenshot");
+        AllureLifecycle.Instance.StopStep();
+
+        AllureLifecycle.Instance.StartStep(new StepResult { name = "Select sorting option: Price - high to low" });
+        await searchResultsPage.selectPriceSorting("Prijs - hoog naar laag");
+        AllureLifecycle.Instance.StopStep();
+
+        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify that the results are correctly sorted by price in descending order (high to low)" });
+        await searchResultsPage.verifySortingByPriceHighToLow();
+        await CaptureScreenshotAsync(page, "SelectedLocation Screenshot");
+        AllureLifecycle.Instance.StopStep();
     }
 }
