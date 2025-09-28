@@ -3,3 +3,4 @@ obj/
 .playwright/
 node_modules/
 .env
+run-latest-report.sh
