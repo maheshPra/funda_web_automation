@@ -8,7 +8,7 @@ namespace PlaywrightTests.Pages;
 
 public class SearchResultsPage
 {
-    // Locators 
+    // Locators
     private readonly IPage _page;
     private static readonly Regex CityExactRegex = new Regex("^Nieuw-Amsterdam$");
     private const string pageHeaderTestId = "pageHeader";
@@ -30,7 +30,6 @@ public class SearchResultsPage
     public const string sortingOptionChecked = "option:checked";
     private const string expectedDefaultSortingOption = "Relevantie";
 
-
     // Constructor
     public SearchResultsPage(IPage page)
     {
@@ -42,7 +41,6 @@ public class SearchResultsPage
     public async Task ensureSelectedLocationIsVisible()
     {
         await _page.Locator("div").Filter(new() { HasTextRegex = CityExactRegex }).First.WaitForAsync();
-
     }
 
     // Verify that the results match the selected city filter by checking URL and header text
@@ -52,9 +50,10 @@ public class SearchResultsPage
         Assert.Contains("nieuw-amsterdam", _page.Url, StringComparison.OrdinalIgnoreCase);
 
         var selectedText = await _page.Locator("div")
-                                      .Filter(new() { HasTextRegex = CityExactRegex })
-                                      .First
-                                      .InnerTextAsync();
+            .Filter(new() { HasTextRegex = CityExactRegex })
+            .First
+            .InnerTextAsync();
+
         var headerText = await _page.GetByTestId(pageHeaderTestId).InnerTextAsync();
         Assert.Contains(selectedText, headerText, StringComparison.OrdinalIgnoreCase);
     }
@@ -76,8 +75,8 @@ public class SearchResultsPage
         await priceTo.WaitForAsync(new LocatorWaitForOptions { State = WaitForSelectorState.Visible });
         await priceTo.ClickAsync();
         await _page.GetByTestId(maxPriceOptionTestId).GetByText(maxPriceText).ClickAsync();
-
     }
+
     // Verify that the results match the applied price filter
     public async Task verifyResultsMatchedPriceFilter()
     {
@@ -115,14 +114,13 @@ public class SearchResultsPage
             }
             else
             {
-                //fail if parsing fails
+                // Fail if parsing fails
                 Assert.Fail($"Failed to parse price: '{priceText}'");
             }
         }
-
     }
 
-    //Verify that the street name and house no is correct
+    // Verify that the street name and house no is correct
     public async Task<string> verifyStreetNameAndHouseNumber()
     {
         var streetAndHouseNo = await _page.Locator(streetAndHouseNumberLocator).First.InnerTextAsync();
@@ -176,22 +174,20 @@ public class SearchResultsPage
         Assert.Equal(expectedDefaultSortingOption, selectedText);
     }
 
-    //click on sorting button and select options
+    // Click on sorting button and select options
     public async Task selectPriceSorting(string optionLabel)
     {
-        var dropdown = _page.Locator("select.absolute.inset-0.cursor-pointer.opacity-0");
+        var dropdown = _page.Locator(sortingDropdown);
 
         // Wait for it to be visible
         await dropdown.WaitForAsync();
 
         // Select the option by its visible text (label)
         await dropdown.SelectOptionAsync(new SelectOptionValue { Label = optionLabel });
-
         Console.WriteLine($"Selected sorting option: '{optionLabel}'");
-
     }
 
-    //verify sorting by price low to high 
+    // Verify sorting by price low to high
     public async Task verifySortingByPriceLowToHigh()
     {
         var firstPrice = _page.Locator(priceCard).First;
@@ -204,7 +200,6 @@ public class SearchResultsPage
 
         // Get all the price elements
         var priceElements = await _page.Locator(priceCard).AllAsync();
-
         List<decimal> prices = new();
 
         foreach (var priceElement in priceElements)
@@ -229,16 +224,14 @@ public class SearchResultsPage
             }
         }
 
-        // Debug: print all prices
         Console.WriteLine("Prices on page: " + string.Join(", ", prices));
 
         // Verify that the list is sorted in ascending order
         var sortedPrices = prices.OrderBy(p => p).ToList();
-        Assert.Equal(sortedPrices, prices); // fails if not sorted
-
+        Assert.Equal(sortedPrices, prices);
     }
 
-    //verify sorting by price high to low 
+    // Verify sorting by price high to low
     public async Task verifySortingByPriceHighToLow()
     {
         var firstPrice = _page.Locator(priceCard).First;
@@ -251,7 +244,6 @@ public class SearchResultsPage
 
         // Get all the price elements
         var priceElements = await _page.Locator(priceCard).AllAsync();
-
         List<decimal> prices = new();
 
         foreach (var priceElement in priceElements)
@@ -280,5 +272,4 @@ public class SearchResultsPage
         var sortedPrices = prices.OrderByDescending(p => p).ToList();
         Assert.Equal(sortedPrices, prices);
     }
-
 }

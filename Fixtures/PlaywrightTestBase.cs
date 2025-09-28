@@ -1,9 +1,8 @@
 using Microsoft.Playwright;
 using Xunit;
 using Allure.Net.Commons;
-using System.IO;
 
-namespace PlaywrightTests;
+namespace PlaywrightTests.Base;
 
 public class PlaywrightTestBase : IAsyncLifetime
 {
@@ -45,7 +44,6 @@ public class PlaywrightTestBase : IAsyncLifetime
 
         var page = await context.NewPageAsync();
 
-        // Optional: maximize window in non-headless mode
         if (!Headless)
             await page.SetViewportSizeAsync(1920, 1080);
 
