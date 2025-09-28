@@ -1,0 +1,64 @@
+name: Manual Playwright Test with Allure
+
+on:
+  workflow_dispatch:
+    inputs:
+      funda_user_agent:
+        description: 'FUNDA_USER_AGENT value'
+        required: true
+        type: string
+
+permissions:
+  contents: write
+  pages: write
+  id-token: write
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+
+    env:
+      FUNDA_USER_AGENT: ${{ inputs.funda_user_agent }}
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Setup .NET
+        uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: '9.0.x'
+
+      - name: Restore dependencies
+        run: dotnet restore
+
+      - name: Build
+        run: dotnet build --no-restore
+
+      - name: Install Playwright Browsers
+        run: pwsh bin/Debug/net*/playwright.ps1 install
+
+      - name: Run xUnit tests
+        run: dotnet test --logger:"console;verbosity=detailed"
+
+      - name: Copy Allure results from bin to root
+        run: |
+          mkdir -p allure-results
+          for dir in $(find . -type d -path "*/bin/Debug/net*/allure-results"); do
+            echo "Copying from $dir"
+            cp -r "$dir"/* allure-results/
+          done
+
+      - name: Install Allure CLI and Generate Report
+        uses: simple-elf/allure-report-action@v1.7
+        with:
+          allure_results: allure-results
+          allure_report: allure-report
+
+      - name: Deploy Allure Report to gh-pages
+        uses: peaceiris/actions-gh-pages@v3
+        with:
+          github_token: ${{ secrets.GITHUB_TOKEN }}
+          publish_dir: ./allure-report
+          publish_branch: gh-pages
+          force_orphan: true
