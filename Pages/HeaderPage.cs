@@ -78,6 +78,7 @@ public class HeaderPage
     // Click the logout button from the account dropdown menu
     public async Task clickLogoutButton()
     {
+        await _page.WaitForLoadStateAsync(LoadState.Load);
         var accountButton = _page.Locator(accountButtonId);
         await accountButton.WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 15000 });
         await accountButton.HoverAsync();

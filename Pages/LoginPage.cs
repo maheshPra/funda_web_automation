@@ -41,8 +41,4 @@ public class LoginPage
         await _page.GetByRole(AriaRole.Textbox, new() { Name = passwordTextboxName }).FillAsync(password);
         await _page.GetByRole(AriaRole.Button, new() { Name = loginSubmitButtonText }).ClickAsync();
     }
-
-    
-     
-
 }

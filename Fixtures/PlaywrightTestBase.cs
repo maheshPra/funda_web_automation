@@ -9,7 +9,7 @@ public class PlaywrightTestBase : IAsyncLifetime
 {
     protected IBrowser Browser { get; private set; }
     protected IPlaywright Playwright { get; private set; }
-    protected virtual bool Headless => true;
+    protected virtual bool Headless => false;
 
     public async Task InitializeAsync()
     {

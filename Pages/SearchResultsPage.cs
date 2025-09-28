@@ -62,7 +62,7 @@ public class SearchResultsPage
     public async Task searchWithPriceFilter()
     {
         // Wait for the page and network to finish
-        await _page.WaitForLoadStateAsync(LoadState.NetworkIdle);
+        await _page.WaitForLoadStateAsync(LoadState.Load);
 
         // Click "Price from" and select minimum price
         var priceFrom = _page.Locator(priceFromInput);
@@ -190,6 +190,7 @@ public class SearchResultsPage
     // Verify sorting by price low to high
     public async Task verifySortingByPriceLowToHigh()
     {
+        await _page.WaitForLoadStateAsync(LoadState.Load);
         var firstPrice = _page.Locator(priceCard).First;
         await firstPrice.WaitForAsync(new LocatorWaitForOptions
         {
@@ -234,6 +235,7 @@ public class SearchResultsPage
     // Verify sorting by price high to low
     public async Task verifySortingByPriceHighToLow()
     {
+        await _page.WaitForLoadStateAsync(LoadState.Load);
         var firstPrice = _page.Locator(priceCard).First;
         await firstPrice.WaitForAsync(new LocatorWaitForOptions
         {
