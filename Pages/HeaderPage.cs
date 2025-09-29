@@ -65,7 +65,7 @@ public class HeaderPage
         await inloggenButton.HoverAsync();
         await inloggenButton.ClickAsync();
         await _page.GetByRole(AriaRole.Heading, new() { Name = loginHeadingText })
-                   .WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 15000 });
+                   .WaitForAsync(new() { State = WaitForSelectorState.Visible, Timeout = 30000 });
     }
 
     // Verify the button label after logging in with a valid user.

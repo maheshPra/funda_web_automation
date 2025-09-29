@@ -21,44 +21,55 @@ public class SortingTests : PlaywrightTestBase
         var searchResultsPage = new SearchResultsPage(page);
         var headerPage = new HeaderPage(page);
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Navigate to LandingPage" });
-        await goToLandingPage(landingPage, headerPage);
-        AllureLifecycle.Instance.StopStep();
+        try
+        {
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Search with location filter" });
-        await landingPage.searchWithLocationFilter(TestData.City);
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Navigate to LandingPage" });
+            await goToLandingPage(landingPage, headerPage);
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify that the selected location is displayed in the search box" });
-        await searchResultsPage.ensureSelectedLocationIsVisible();
-        await CaptureScreenshotAsync(page, "SelectedLocation Screenshot");
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Search with location filter" });
+            await landingPage.searchWithLocationFilter(TestData.City);
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify that search results match the selected location" });
-        await searchResultsPage.verifyResultsMatchSelectedLocation();
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify that the selected location is displayed in the search box" });
+            await searchResultsPage.ensureSelectedLocationIsVisible();
+            await CaptureScreenshotAsync(page, "SelectedLocation Screenshot");
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify default sorting option" });
-        await searchResultsPage.verifySortingDropdownHasDefaultOption();
-        await CaptureScreenshotAsync(page, "DefaultSortingOption Screenshot");
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify that search results match the selected location" });
+            await searchResultsPage.verifyResultsMatchSelectedLocation();
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Select sorting option: Price - low to high" });
-        await searchResultsPage.selectPriceSorting("Prijs - laag naar hoog");
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify default sorting option" });
+            await searchResultsPage.verifySortingDropdownHasDefaultOption();
+            await CaptureScreenshotAsync(page, "DefaultSortingOption Screenshot");
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify sorting by price low to high" });
-        await searchResultsPage.verifySortingByPriceLowToHigh();
-        await CaptureScreenshotAsync(page, "PriceLowToHigh Screenshot");
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Select sorting option: Price - low to high" });
+            await searchResultsPage.selectPriceSorting("Prijs - laag naar hoog");
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Select sorting option: Price - high to low" });
-        await searchResultsPage.selectPriceSorting("Prijs - hoog naar laag");
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify sorting by price low to high" });
+            await searchResultsPage.verifySortingByPriceLowToHigh();
+            await CaptureScreenshotAsync(page, "PriceLowToHigh Screenshot");
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify sorting by price high to low" });
-        await searchResultsPage.verifySortingByPriceHighToLow();
-        await CaptureScreenshotAsync(page, "PriceHighToLow Screenshot");
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Select sorting option: Price - high to low" });
+            await searchResultsPage.selectPriceSorting("Prijs - hoog naar laag");
+            AllureLifecycle.Instance.StopStep();
+
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify sorting by price high to low" });
+            await searchResultsPage.verifySortingByPriceHighToLow();
+            await CaptureScreenshotAsync(page, "PriceHighToLow Screenshot");
+            AllureLifecycle.Instance.StopStep();
+        }
+          catch (Exception ex)
+        {
+            await CaptureScreenshotAsync(page, "Error Screenshot");
+            var logs = await page.EvaluateAsync<string>("() => console.log");
+            Console.WriteLine("Captured logs: " + logs);
+            throw;
+        }
     }
 }

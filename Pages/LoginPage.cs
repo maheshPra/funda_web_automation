@@ -29,7 +29,7 @@ public class LoginPage
     // Verify Login Page details
     public async Task verifyLoginPageIsDisplayed()
     {
-        await _page.WaitForLoadStateAsync(LoadState.Load);
+        await _page.WaitForLoadStateAsync(LoadState.NetworkIdle);
         await _page.GetByRole(AriaRole.Heading, new() { Name = HeaderPage.loginHeadingText }).IsVisibleAsync();
         await _page.GetByText(emailLabelText).IsVisibleAsync();
         await _page.GetByText(passwordLabelText, new() { Exact = true }).IsVisibleAsync();

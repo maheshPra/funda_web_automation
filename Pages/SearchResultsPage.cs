@@ -89,9 +89,6 @@ public class SearchResultsPage
         });
         await _page.WaitForTimeoutAsync(500);
 
-        // int minPrice = 300_000;
-        // int maxPrice = 500_000;
-
         // Get all the price elements
         var priceElements = await _page.Locator(priceCard).AllAsync();
 

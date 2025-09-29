@@ -20,36 +20,46 @@ public class LoginTests : PlaywrightTestBase
         var landingPage = new LandingPage(page);
         var headerPage = new HeaderPage(page);
         var loginPage = new LoginPage(page);
+        
+        try
+        {
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Navigate to LandingPage" });
+            await goToLandingPage(landingPage, headerPage);
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Navigate to LandingPage" });
-        await goToLandingPage(landingPage, headerPage);
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Click Inloggen button" });
+            await headerPage.clickInloggenButton();
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Click Inloggen button" });
-        await headerPage.clickInloggenButton();
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify navigation to the Login page and validate its content" });
+            await loginPage.verifyLoginPageIsDisplayed();
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify navigation to the Login page and validate its content" });
-        await loginPage.verifyLoginPageIsDisplayed();
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Login with valid credentials" });
+            await loginPage.login(TestData.UserName, TestData.Password);
+            await CaptureScreenshotAsync(page, "LoggedIn Screenshot");
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Login with valid credentials" });
-        await loginPage.login(TestData.UserName,TestData.Password);
-        await CaptureScreenshotAsync(page, "LoggedIn Screenshot");
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify success login" });
+            await headerPage.verifySuccessfulLogin();
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify success login" });
-        await headerPage.verifySuccessfulLogin();
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Logout" });
+            await headerPage.clickLogoutButton();
+            await CaptureScreenshotAsync(page, "Logout Screenshot");
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Logout" });
-        await headerPage.clickLogoutButton();
-        await CaptureScreenshotAsync(page, "Logout Screenshot");
-        AllureLifecycle.Instance.StopStep();
-
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify successful logout" });
-        await headerPage.verifySuccessfulLogout();
-        await CaptureScreenshotAsync(page, "LoggedOut Screenshot");
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify successful logout" });
+            await headerPage.verifySuccessfulLogout();
+            await CaptureScreenshotAsync(page, "LoggedOut Screenshot");
+            AllureLifecycle.Instance.StopStep();
+        }
+        catch (Exception ex)
+        {
+            await CaptureScreenshotAsync(page, "Error Screenshot");
+            var logs = await page.EvaluateAsync<string>("() => console.log");
+            Console.WriteLine("Captured logs: " + logs);
+            throw;
+        }
     }
 }

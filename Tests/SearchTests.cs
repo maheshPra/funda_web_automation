@@ -21,36 +21,47 @@ public class SearchTests : PlaywrightTestBase
         var searchResultsPage = new SearchResultsPage(page);
         var headerPage = new HeaderPage(page);
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Navigate to LandingPage" });
-        await goToLandingPage(landingPage, headerPage);
-        AllureLifecycle.Instance.StopStep();
+        try
+        {
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Search with location filter" });
-        await landingPage.searchWithLocationFilter(TestData.City);
-        await CaptureScreenshotAsync(page, "EnterLocation Screenshot");
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Navigate to LandingPage" });
+            await goToLandingPage(landingPage, headerPage);
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify key UI elements on SearchResultsPage-Header" });
-        await headerPage.assertHeaderPageUIElementsDisplayed();
-        await CaptureScreenshotAsync(page, "SearchResultsPage-Header Screenshot");
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Search with location filter" });
+            await landingPage.searchWithLocationFilter(TestData.City);
+            await CaptureScreenshotAsync(page, "EnterLocation Screenshot");
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify that the selected location is displayed in the search box" });
-        await searchResultsPage.ensureSelectedLocationIsVisible();
-        await CaptureScreenshotAsync(page, "SelectedLocation Screenshot");
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify key UI elements on SearchResultsPage-Header" });
+            await headerPage.assertHeaderPageUIElementsDisplayed();
+            await CaptureScreenshotAsync(page, "SearchResultsPage-Header Screenshot");
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify that search results match the selected location" });
-        await searchResultsPage.verifyResultsMatchSelectedLocation();
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify that the selected location is displayed in the search box" });
+            await searchResultsPage.ensureSelectedLocationIsVisible();
+            await CaptureScreenshotAsync(page, "SelectedLocation Screenshot");
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Apply price filter" });
-        await searchResultsPage.searchWithPriceFilter();
-        await CaptureScreenshotAsync(page, "PriceFilterApplied Screenshot");
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify that search results match the selected location" });
+            await searchResultsPage.verifyResultsMatchSelectedLocation();
+            AllureLifecycle.Instance.StopStep();
 
-        AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify search results respect the applied price filter" });
-        await searchResultsPage.verifyResultsMatchedPriceFilter(TestData.minPrice, TestData.maxPrice);
-        AllureLifecycle.Instance.StopStep();
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Apply price filter" });
+            await searchResultsPage.searchWithPriceFilter();
+            await CaptureScreenshotAsync(page, "PriceFilterApplied Screenshot");
+            AllureLifecycle.Instance.StopStep();
+
+            AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify search results respect the applied price filter" });
+            await searchResultsPage.verifyResultsMatchedPriceFilter(TestData.minPrice, TestData.maxPrice);
+            AllureLifecycle.Instance.StopStep();
+        }
+          catch (Exception ex)
+        {
+            await CaptureScreenshotAsync(page, "Error Screenshot");
+            var logs = await page.EvaluateAsync<string>("() => console.log");
+            Console.WriteLine("Captured logs: " + logs);
+            throw;
+        }
     }
 }
