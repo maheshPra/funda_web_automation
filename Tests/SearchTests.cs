@@ -50,7 +50,7 @@ public class SearchTests : PlaywrightTestBase
         AllureLifecycle.Instance.StopStep();
 
         AllureLifecycle.Instance.StartStep(new StepResult { name = "Verify search results respect the applied price filter" });
-        await searchResultsPage.verifyResultsMatchedPriceFilter();
+        await searchResultsPage.verifyResultsMatchedPriceFilter(TestData.minPrice, TestData.maxPrice);
         AllureLifecycle.Instance.StopStep();
     }
 }

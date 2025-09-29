@@ -78,7 +78,7 @@ public class SearchResultsPage
     }
 
     // Verify that the results match the applied price filter
-    public async Task verifyResultsMatchedPriceFilter()
+    public async Task verifyResultsMatchedPriceFilter(int minPrice, int maxPrice)
     {
         // Wait for first price element to ensure results are loaded
         var firstPrice = _page.Locator(priceCard).First;
@@ -89,8 +89,8 @@ public class SearchResultsPage
         });
         await _page.WaitForTimeoutAsync(500);
 
-        int minPrice = 300_000;
-        int maxPrice = 500_000;
+        // int minPrice = 300_000;
+        // int maxPrice = 500_000;
 
         // Get all the price elements
         var priceElements = await _page.Locator(priceCard).AllAsync();
@@ -183,6 +183,7 @@ public class SearchResultsPage
         // Select the option by its visible text (label)
         await dropdown.SelectOptionAsync(new SelectOptionValue { Label = optionLabel });
         Console.WriteLine($"Selected sorting option: '{optionLabel}'");
+        await _page.WaitForLoadStateAsync(LoadState.Load);
     }
 
     // Verify sorting by price low to high
