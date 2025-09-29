@@ -13,7 +13,7 @@ namespace PlaywrightTests.Tests;
 public class PropertyDetailsTests : PlaywrightTestBase
 {
     [AllureStory("Verify property card and details page information")]
-    //[Fact]
+    [Fact]
     public async Task VerifyCardAndDetailsPageInfoDisplayed()
     {
         var page = await CreateFundaPageAsync();
