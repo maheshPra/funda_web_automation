@@ -34,14 +34,11 @@ public class PlaywrightTestBase : IAsyncLifetime
         if (string.IsNullOrEmpty(userAgent))
             throw new InvalidOperationException("FUNDA_USER_AGENT environment variable is not set.");
 
+        // Each test gets its own isolated browser context
         var context = await Browser.NewContextAsync(new BrowserNewContextOptions
         {
             UserAgent = userAgent,
-            ViewportSize = new ViewportSize
-            {
-                Width = 1920,
-                Height = 1080
-            }
+            ViewportSize = new ViewportSize { Width = 1920, Height = 1080 }
         });
 
         var page = await context.NewPageAsync();
@@ -51,6 +48,7 @@ public class PlaywrightTestBase : IAsyncLifetime
 
         return page;
     }
+
 
     protected async Task CaptureScreenshotAsync(IPage page, string name = "screenshot")
     {

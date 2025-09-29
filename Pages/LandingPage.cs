@@ -32,7 +32,6 @@ public class LandingPage
     {
         var cookieButton = _page.GetByRole(AriaRole.Button, new() { Name = allesAccepteren });
 
-        // Check if the button exists and is visible
         if (await cookieButton.IsVisibleAsync())
         {
             await cookieButton.ClickAsync();

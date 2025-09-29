@@ -61,7 +61,6 @@ public class SearchResultsPage
     // Apply a price filter to the search results
     public async Task searchWithPriceFilter()
     {
-        // Wait for the page and network to finish
         await _page.WaitForLoadStateAsync(LoadState.Load);
 
         // Click "Price from" and select minimum price
@@ -133,6 +132,7 @@ public class SearchResultsPage
         return postalCodeAndCity;
     }
 
+    //Verify Property price
     public async Task<string> verifyPropertyPrice()
     {
         var propertyPrice = await _page.Locator(propertyPriceLocator).First.InnerTextAsync();
