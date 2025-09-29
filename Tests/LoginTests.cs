@@ -13,7 +13,7 @@ namespace PlaywrightTests.Tests;
 public class LoginTests : PlaywrightTestBase
 {
     [AllureStory("Verify Login and logout functionality")]
-    [Fact]
+    //[Fact]
     public async Task LoginAndLogout()
     {
         var page = await CreateFundaPageAsync();

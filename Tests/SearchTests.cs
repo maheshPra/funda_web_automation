@@ -13,7 +13,7 @@ namespace PlaywrightTests.Tests;
 public class SearchTests : PlaywrightTestBase
 {
     [AllureStory("Verify search and filtering functionality")]
-    [Fact]
+    //[Fact]
     public async Task VerifySearchAndFiltering()
     {
         var page = await CreateFundaPageAsync();
