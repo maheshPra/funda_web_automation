@@ -1,6 +1,7 @@
 using Microsoft.Playwright;
 using PlaywrightTests.Base;
 using PlaywrightTests.Pages;
+using PlaywrightTests.Data;
 using Xunit;
 using Allure.Xunit.Attributes;
 using Allure.Net.Commons;
@@ -33,7 +34,7 @@ public class LoginTests : PlaywrightTestBase
         AllureLifecycle.Instance.StopStep();
 
         AllureLifecycle.Instance.StartStep(new StepResult { name = "Login with valid credentials" });
-        await loginPage.login("maheshrathnayake13@gmail.com", "Secret@123");
+        await loginPage.login(TestData.UserName,TestData.Password);
         await CaptureScreenshotAsync(page, "LoggedIn Screenshot");
         AllureLifecycle.Instance.StopStep();
 

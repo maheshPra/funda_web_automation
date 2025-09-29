@@ -38,6 +38,7 @@ public class HeaderPage
     // Assert that key elements are visible on the home page
     public async Task assertHeaderPageUIElementsDisplayed()
     {
+        await _page.WaitForLoadStateAsync(LoadState.Load);
         Assert.True(await _page.GetByRole(AriaRole.Link, new() { Name = fundaLinkText, Exact = true }).IsVisibleAsync());
         Assert.True(await _page.Locator(kopenButtonId).IsVisibleAsync());
         Assert.True(await _page.Locator(hurenButtonId).IsVisibleAsync());

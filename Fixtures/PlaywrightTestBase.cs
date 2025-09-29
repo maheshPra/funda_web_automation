@@ -2,6 +2,7 @@ using Microsoft.Playwright;
 using Xunit;
 using Allure.Net.Commons;
 using PlaywrightTests.Pages;
+using PlaywrightTests.Data;
 
 namespace PlaywrightTests.Base;
 
@@ -9,7 +10,7 @@ public class PlaywrightTestBase : IAsyncLifetime
 {
     protected IBrowser Browser { get; private set; }
     protected IPlaywright Playwright { get; private set; }
-    protected virtual bool Headless => true;
+    protected virtual bool Headless => false;
 
     public async Task InitializeAsync()
     {
@@ -60,7 +61,7 @@ public class PlaywrightTestBase : IAsyncLifetime
     protected async Task goToLandingPage(LandingPage landingPage, HeaderPage headerPage)
     {
         AllureLifecycle.Instance.StartStep(new StepResult { name = "Navigate to LandingPage" });
-        await landingPage.GoTo("https://www.funda.nl/");
+        await landingPage.GoTo(TestData.BaseUrl);
         await landingPage.acceptCookies();
         await headerPage.waitForLandingPage();
         AllureLifecycle.Instance.StopStep();
