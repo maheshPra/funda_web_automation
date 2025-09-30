@@ -1,0 +1,6 @@
+"Epic","Feature","Story","FAILED","BROKEN","PASSED","SKIPPED","UNKNOWN"
+"","Sorting","Verify sorting functionality in search results page","0","1","0","0","0"
+"","Property Details","Verify property card and details page information","0","1","0","0","0"
+"","LandingPage","Check LandingPage load and navigation","0","0","1","0","0"
+"","Login and Logout","Verify Login and logout functionality","0","0","1","0","0"
+"","Search","Verify search and filtering functionality","0","1","0","0","0"
