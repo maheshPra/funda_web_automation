@@ -8,9 +8,11 @@
   4) Playwright dependencies available.
 
 🔧 Setup & Execution
-  1) Clone the repository : git clone https://github.com/maheshPra/funda_web_automation.git.
+  1) Clone the repository: git clone https://github.com/maheshPra/funda_web_automation.git.
   2) cd funda_web_automation.
-  3) Replace <FUNDA_USER_AGENT> in the .env file and run-latest-report.sh with your user agent value enclosed in double quotes.
+  3) Replace <FUNDA_USER_AGENT> with your user agent value in the following files:
+    .env file: <FUNDA_USER_AGENT>
+    run-latest-report.sh script: "<FUNDA_USER_AGENT>" (enclosed in double quotes).
 
 ▶️ Run tests and reports, execute the following in the terminal
 
