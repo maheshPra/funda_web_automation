@@ -38,25 +38,26 @@ To bypass robot detection, a special **user agent** is used (stored in `.env`).
 FUNDA
 │
 ├── funda_web_automation
-│   ├── .config
-│   ├── .github
-│   ├── allure-report
-│   ├── bin
-│   ├── Fixtures
-│   │   └── PlaywrightTestBase.cs
-│   ├── obj
-│   ├── Pages
-│   │   ├── HeaderPage.cs
-│   │   ├── LandingPage.cs
-│   │   ├── LoginPage.cs
-│   │   ├── PropertyDetailsPage.cs
-│   │   └── SearchResultsPage.cs
-│   └── Tests
-│       ├── LandingPageTests.cs
-│       ├── LoginTests.cs
-│       ├── PropertyDetailsTests.cs
-│       ├── SearchTests.cs
-│       └── SortingTests.cs
+│ ├── .config
+│ ├── .github
+│ ├── allure-report
+│ ├── bin
+│ ├── Fixtures
+│ │ └── PlaywrightTestBase.cs
+│ ├── obj
+│ ├── Pages
+│ │ ├── HeaderPage.cs
+│ │ ├── LandingPage.cs
+│ │ ├── LoginPage.cs
+│ │ ├── PropertyDetailsPage.cs
+│ │ └── SearchResultsPage.cs
+│ └── Tests
+│ ├── LandingPageTests.cs
+│ ├── LoginTests.cs
+│ ├── PropertyDetailsTests.cs
+│ ├── SearchTests.cs
+│ └── SortingTests.cs
+│
 ├── .env
 ├── .gitignore
 ├── allureConfig.json
@@ -64,6 +65,7 @@ FUNDA
 ├── run-latest-report.sh
 ├── TestData.cs
 ├── xunit.runner.json
+├── Fun_Playwright.sln.old
 └── funda.sln
 
 ---
