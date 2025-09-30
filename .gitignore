@@ -2,5 +2,5 @@ bin/
 obj/
 .playwright/
 node_modules/
-.env
-run-latest-report.sh
+# .env
+# run-latest-report.sh
