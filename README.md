@@ -14,8 +14,10 @@ These tests are **fast, reliable, and scalable** (target: up to ~200 tests).
 - **Login Test** – Verifies login and logout functionality.
 - **Landing Page Test** – Validates UI elements and navigation on the landing page.
 - **Property Details Test** – Ensures property card and details page show consistent information.
-- **Search Test** – Performs a city-based search and validates results.
+- **Search Test** – Performs a location- and price-based search, then validates the results.
 - **Sort Test** – Sorts search results by price and verifies correct ordering.
+
+  A sample local test execution can be found: https://drive.google.com/file/d/179pUJgOMDsbSl3SWZ06pGSEP7CGCU37u/view?usp=sharing
 
 ---
 
