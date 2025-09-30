@@ -35,6 +35,7 @@ To bypass robot detection, a special **user agent** is used (stored in `.env`).
 ---
 
 ## 📂 Project Structure
+```text
 FUNDA
 │
 ├── funda_web_automation
@@ -67,7 +68,7 @@ FUNDA
 ├── xunit.runner.json
 ├── Fun_Playwright.sln.old
 └── funda.sln
-
+```
 ---
 
 ## ⚠️ Known Flaky Tests
