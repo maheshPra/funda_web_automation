@@ -34,6 +34,7 @@ NOTE: By default, the tests run in headless mode.To execute them in headless mod
   3) Select "Manual Playwright Test with Allure" workflow
   4) Click the Run workflow dropdown
   5) Enter the "FUNDA_USER_AGENT" value and click Run workflow
+     
      👉 "Due to test flakiness, the pipeline occasionally fails to run, which prevents the report from being generated.
      This issue needs further investigation, but given the time constraints, I focused on completing the configuration for now.
      Sample success report: https://maheshpra.github.io/funda_web_automation/
