@@ -53,11 +53,11 @@ FUNDA
 │ │ ├── PropertyDetailsPage.cs
 │ │ └── SearchResultsPage.cs
 │ └── Tests
-│ ├── LandingPageTests.cs
-│ ├── LoginTests.cs
-│ ├── PropertyDetailsTests.cs
-│ ├── SearchTests.cs
-│ └── SortingTests.cs
+│   ├── LandingPageTests.cs
+│   ├── LoginTests.cs
+│   ├── PropertyDetailsTests.cs
+│   ├── SearchTests.cs
+│   └── SortingTests.cs
 │
 ├── .env
 ├── .gitignore
