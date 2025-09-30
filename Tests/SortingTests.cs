@@ -13,7 +13,7 @@ namespace PlaywrightTests.Tests;
 public class SortingTests : PlaywrightTestBase
 {
     [AllureStory("Verify sorting functionality in search results page")]
-    //[Fact]
+    [Fact]
     public async Task VerifySortingFunctionality()
     {
         var page = await CreateFundaPageAsync();
