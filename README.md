@@ -60,7 +60,6 @@ FUNDA
 │   ├── PropertyDetailsTests.cs
 │   ├── SearchTests.cs
 │   └── SortingTests.cs
-│
 ├── .env
 ├── .gitignore
 ├── allureConfig.json
