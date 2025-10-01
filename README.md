@@ -30,7 +30,7 @@ To bypass robot detection, a special **user agent** is used (stored in `.env`).
 - **Language:** C#
 - **Framework:** .NET 7
 - **Automation:** Playwright
-- **Testing:** xUnit
+- **Testing Framework:** xUnit
 - **Reporting:** Allure Reports
 - **CI/CD:** GitHub Actions
 
