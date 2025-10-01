@@ -68,7 +68,6 @@ FUNDA
 ├── run-latest-report.sh
 ├── TestData.cs
 ├── xunit.runner.json
-├── Fun_Playwright.sln.old
 └── funda.sln
 ```
 ---
